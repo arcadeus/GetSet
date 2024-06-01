@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GetSet - Auto test</title>
+        <meta charset='utf-8' />
+        <script>
+            //
+            function send_command(xhr, command)
+            {
+                xhr.open('POST', 'http://localhost:8081/command', false);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send('command=' + command);
+
+                if (xhr.status == 200)
+                    document.body.innerHTML += xhr.response + '<br>';
+                else
+                {
+                    document.body.innerHTML += '<div style="color:red">'
+                                            + xhr.response
+                                            + '</div>';
+                }
+            }
+
+            //
+            function random_string(length)
+            {
+                let result = '';
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const charactersLength = characters.length;
+                let counter = 0;
+                while (counter < length)
+                {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    counter += 1;
+                }
+                return result;
+            }
+
+            //
+            addEventListener('load', (event) => {
+                let xhr = new XMLHttpRequest();
+
+                var keys = ['a', 'b', 'c'];
+
+                for(var i = 0; i < 10000; i++)
+                {
+                    var n_key = Math.floor(Math.random() * keys.length);
+
+                    var is_read = (Math.floor(Math.random() * 100) > 0);
+                    if (is_read)
+                        send_command(xhr, '$get ' + keys[n_key]);
+                    else
+                    {
+                        var n_len = Math.floor(Math.random() * 10); // 0..9
+                        var str = random_string(n_len);
+                        send_command(xhr, '$set ' + keys[n_key] + '=' + str);
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Auto test</h1>
+        <a href='/' style='position:fixed; top:1em; right:1em'>Home &gt;&gt;</a>
+    </body>
+</html>
