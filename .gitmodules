@@ -1,0 +1,8 @@
+[submodule "cpp-httplib"]
+	path = cpp-httplib
+	url = ../../yhirose/cpp-httplib
+	branch = master
+[submodule "simpleini"]
+	path = simpleini
+	url = ../../brofield/simpleini
+	branch = master
